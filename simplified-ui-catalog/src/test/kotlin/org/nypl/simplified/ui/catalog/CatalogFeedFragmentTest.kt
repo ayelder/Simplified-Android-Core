@@ -66,7 +66,6 @@ import org.nypl.simplified.ui.catalog.RecyclerViewEspressoUtils.atPositionOnView
 import org.nypl.simplified.ui.catalog.RecyclerViewEspressoUtils.hasAdapterItemCount
 import org.nypl.simplified.ui.catalog.withoutGroups.BookItem
 import org.nypl.simplified.ui.screen.ScreenSizeInformationType
-import org.robolectric.annotation.Config
 import java.net.URI
 
 @ExperimentalCoroutinesApi

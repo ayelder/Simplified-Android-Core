@@ -149,13 +149,13 @@ class ConfirmationFragmentTest {
 
   @Test
   fun `on CardConfirmed event sets ChildCardCreated activity result if user is logged in`() {
-      val loggedInIntent = Intent().apply { putExtra("isLoggedIn", true) }
-      scenario.setActivityIntent(loggedInIntent)
+    val loggedInIntent = Intent().apply { putExtra("isLoggedIn", true) }
+    scenario.setActivityIntent(loggedInIntent)
 
-      testViewModelState.update { it.copy(events = it.events + CardConfirmed) }
+    testViewModelState.update { it.copy(events = it.events + CardConfirmed) }
 
-      scenario.getActivityResult()?.resultCode shouldBeEqualTo CardCreatorActivity.CHILD_CARD_CREATED
-    }
+    scenario.getActivityResult()?.resultCode shouldBeEqualTo CardCreatorActivity.CHILD_CARD_CREATED
+  }
 
   @Test
   fun `on CardConfirmed event clears cache and finishes activity`() = runBlockingTest {
@@ -192,27 +192,28 @@ class ConfirmationFragmentTest {
   }
 
   @Test
-  fun `on AddSavedCardToGallery event launches intent to do so and calls eventHasBeenHandled`() = runBlockingTest {
-    var expectedIntent: Intent? = null
-    InstrumentationRegistry.getInstrumentation().targetContext.registerReceiver(
-      object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-          expectedIntent = intent
-        }
-      },
-      IntentFilter(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-    )
+  fun `on AddSavedCardToGallery event launches intent to do so and calls eventHasBeenHandled`() =
+    runBlockingTest {
+      var expectedIntent: Intent? = null
+      InstrumentationRegistry.getInstrumentation().targetContext.registerReceiver(
+        object : BroadcastReceiver() {
+          override fun onReceive(context: Context?, intent: Intent?) {
+            expectedIntent = intent
+          }
+        },
+        IntentFilter(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+      )
 
-    val fileUri = Uri.parse("fileUri")
-    val event = AddSavedCardToGallery(fileUri)
-    testViewModelState.update { it.copy(events = it.events + event) }
+      val fileUri = Uri.parse("fileUri")
+      val event = AddSavedCardToGallery(fileUri)
+      testViewModelState.update { it.copy(events = it.events + event) }
 
-    expectedIntent?.let {
-      it.data shouldBe fileUri
+      expectedIntent?.let {
+        it.data shouldBe fileUri
+      }
+
+      verify { mockConfirmationViewModel.eventHasBeenHandled(event.id) }
     }
-
-    verify { mockConfirmationViewModel.eventHasBeenHandled(event.id) }
-  }
 }
 
 // Marginally better than launching our own activityScenario? Maybe...

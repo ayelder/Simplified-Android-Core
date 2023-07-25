@@ -152,7 +152,7 @@ class OEAccountDetailFragment : Fragment() {
         hideSoftInput()
         val accountUsername = AccountUsername(binding.firstBookLogin.etAccessCode.text.toString().trim())
         val accountPassword = AccountPassword(binding.firstBookLogin.etPin.text.toString().trim())
-        val description = when(val authMode = viewModel.account.provider.authentication) {
+        val description = when (val authMode = viewModel.account.provider.authentication) {
           /*
           * Presumably we should never be here with these as our primary authentication modes
           * but there should be a cleaner way to handle this rather than throwing an exception.
