@@ -109,7 +109,8 @@ android {
   lintOptions {
     checkReleaseBuilds false
   }
-  applicationVariants.all { variant ->
+  variantFilter {
+    variant ->
     if (variant.buildType.name == 'release') {
       def preBuildTask =
         tasks.findByName("pre${variant.name.capitalize()}Build")
